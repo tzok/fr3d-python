@@ -2,13 +2,13 @@
 on, such as Atoms and Components.
 
 """
+import sys
 if sys.version_info[0] < 3:
     import collections.abc as col
 else:
-     import collections as col
-import sys 
+    import collections as col
 if sys.version_info[0] < 3:
-    from itertools import ifilter as filter    # old name
+    from itertools import ifilter as filter  # old name
 
 import operator as op
 
@@ -29,19 +29,23 @@ class EntitySelector(object):
         self.options = kwargs
 
     def __callable_filter__(self, key, func):
+
         def fn(obj):
             attr = getattr(obj, key, None)
             if callable(attr):
                 return func(attr())
             return func(attr)
+
         return fn
 
     def __basic_filter__(self, key, value, compare):
+
         def fn(obj):
             attr = getattr(obj, key, None)
             if callable(attr):
                 return compare(attr(), value)
             return compare(attr, value)
+
         return fn
 
     def __iter__(self):
@@ -63,11 +67,9 @@ class EntitySelector(object):
             if key == '_':
                 filtered = filter(value, filtered)
             elif callable(value):
-                filtered = filter(self.__callable_filter__(key, value),
-                                      filtered)
+                filtered = filter(self.__callable_filter__(key, value), filtered)
             elif isinstance(value, (list, set, tuple)):
-                func = self.__basic_filter__(key, set(value),
-                                             lambda a, b: op.contains(b, a))
+                func = self.__basic_filter__(key, set(value), lambda a, b: op.contains(b, a))
                 filtered = filter(func, filtered)
             else:
                 func = self.__basic_filter__(key, value, op.eq)
@@ -97,7 +99,7 @@ class AtomProxy(col.MutableMapping):
         """
 
         self._definitions[name] = atoms
-        
+
         if sys.version_info[0] < 3:
             if isinstance(atoms, basestring):
                 self._data[name] = set([atoms])
