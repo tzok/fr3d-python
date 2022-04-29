@@ -57,7 +57,7 @@ from fr3d.definitions import HB_weak_donors
 from fr3d.definitions import HB_acceptors
 from fr3d.modified_parent_mapping import modified_nucleotides
 
-from discrepancy import matrix_discrepancy
+from fr3d.classifiers.discrepancy import matrix_discrepancy
 
 # read input and output paths from localpath.py
 # note that fr3d.localpath does not synchronize with Git, so you can change it locally to point to your own directory structure
@@ -68,7 +68,7 @@ except:
     inputPath = ""
     outputNAPairwiseInteractions = ""
 
-from class_limits import nt_nt_cutoffs
+from fr3d.classifiers.class_limits import nt_nt_cutoffs
 
 nt_nt_screen_distance = 12
 
