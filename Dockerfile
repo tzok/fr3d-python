@@ -1,9 +1,20 @@
-FROM python:3.9
+FROM python:2.7
+
+WORKDIR /usr/src/app
+
+RUN \
+    wget https://mmcif.wwpdb.org/docs/sw-examples/python/src/pdbx.tar.gz && \
+    tar -xzf pdbx.tar.gz && \
+    rm pdbx.tar.gz && \
+    mkdir -p source/python/modules && \
+    mv pdbx source/python/modules
+
+ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app/source/python/modules"
 
 WORKDIR /rna
 
 ADD . /rna
 
-RUN python setup.py install
+RUN pip install -r requirements-python-2-7.txt
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
